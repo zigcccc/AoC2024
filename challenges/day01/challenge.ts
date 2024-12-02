@@ -22,7 +22,7 @@ async function solvePart1() {
     result += dist;
   }
 
-  logger.log({ part: 1, result });
+  logger.logSolution({ part: 1, result });
 }
 
 async function solvePart2() {
@@ -51,7 +51,7 @@ async function solvePart2() {
     }
   }
 
-  logger.log({ part: 2, result });
+  logger.logSolution({ part: 2, result });
 }
 
 solvePart1();
