@@ -1,13 +1,31 @@
 import chalk from 'chalk';
+import strip from 'strip-color';
 
 type LogOptions = {
   part: number;
   result: number | string;
 };
 
+function withBorder(...lines: string[]) {
+  const strippedLines = lines.map((line) => strip(line)).map((strippedLine) => strippedLine.length);
+  const maxLineLength = Math.max(...strippedLines) + 4;
+  const horizontalBorder = `+${'-'.repeat(maxLineLength)}+`;
+
+  console.log(chalk.green(horizontalBorder));
+  console.log(chalk.green(`|${' '.repeat(maxLineLength)}|`));
+  for (let line of lines) {
+    if (strip(line).length < maxLineLength) {
+      line = `${line}${' '.repeat(maxLineLength - strip(line).length - 4)}`;
+    }
+    console.log(chalk.green(`|  ${line}  |`));
+  }
+  console.log(chalk.green(`| ${' '.repeat(maxLineLength - 2)} |`));
+  console.log(chalk.green(horizontalBorder));
+  console.log('');
+}
+
 export const logger = {
   logSolution({ result, part }: LogOptions) {
-    console.log(chalk.green.underline(`\nSolution - part ${part}:`));
-    console.log(chalk.green('Result:', chalk.bold(result), '\n'));
+    withBorder(chalk.green.underline(`Solution - part ${part}:`), chalk.green('Result:', chalk.bold(result)));
   },
 } as const;
