@@ -1,9 +1,7 @@
-import { readFile } from 'fs/promises';
-import { resolve } from 'path';
+import { readLines, logger } from '../../utils';
 
 async function solvePart1() {
-  const data = await readFile(resolve(__dirname, './input.txt'));
-  const lines = data.toString().split('\n');
+  const lines = await readLines(__dirname);
 
   const leftList: number[] = [];
   const rightList: number[] = [];
@@ -24,12 +22,11 @@ async function solvePart1() {
     result += dist;
   }
 
-  console.log(result);
+  logger.log({ part: 1, result })
 }
 
 async function solvePart2() {
-  const data = await readFile(resolve(__dirname, './input.txt'));
-  const lines = data.toString().split('\n');
+  const lines = await readLines(__dirname);
 
   const leftList: number[] = [];
   const rightList: number[] = [];
@@ -54,7 +51,8 @@ async function solvePart2() {
     }
   }
 
-  console.log(result)
+  logger.log({ part: 2, result })
 }
 
+solvePart1();
 solvePart2();
