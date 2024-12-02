@@ -1,0 +1,30 @@
+{
+  "name": "aoc2024",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "start": "npx tsx ./index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zigcccc/AoC2024.git"
+  },
+  "keywords": [
+    "Advent",
+    "of",
+    "Code"
+  ],
+  "author": "Ziga Krasovec",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zigcccc/AoC2024/issues"
+  },
+  "homepage": "https://github.com/zigcccc/AoC2024#readme",
+  "dependencies": {
+    "commander": "^12.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1"
+  }
+}
