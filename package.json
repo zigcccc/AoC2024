@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "start": "npx tsx ./index.ts"
+    "start": "npx tsx ./index.ts",
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
