@@ -1,4 +1,4 @@
-import { readLines, logger } from '../../utils';
+import { readLines, logger } from '@/utils';
 
 async function solvePart1() {
   const lines = await readLines(__dirname);
@@ -10,8 +10,8 @@ async function solvePart1() {
 
   for (const line of lines) {
     const [left, right] = line.split('   ');
-    leftList.push(parseInt(left));
-    rightList.push(parseInt(right));
+    leftList.push(parseInt(left, 10));
+    rightList.push(parseInt(right, 10));
   }
 
   leftList.sort();
@@ -22,7 +22,7 @@ async function solvePart1() {
     result += dist;
   }
 
-  logger.log({ part: 1, result })
+  logger.log({ part: 1, result });
 }
 
 async function solvePart2() {
@@ -36,13 +36,13 @@ async function solvePart2() {
 
   for (const line of lines) {
     const [left, right] = line.split('   ');
-    leftList.push(parseInt(left));
-    rightList.push(parseInt(right));
+    leftList.push(parseInt(left, 10));
+    rightList.push(parseInt(right, 10));
   }
 
   for (const num of leftList) {
     if (scores[num]) {
-      result += scores[num]
+      result += scores[num];
     } else {
       const count = rightList.filter((rightNum) => rightNum === num).length;
       const score = count * num;
@@ -51,7 +51,7 @@ async function solvePart2() {
     }
   }
 
-  logger.log({ part: 2, result })
+  logger.log({ part: 2, result });
 }
 
 solvePart1();
