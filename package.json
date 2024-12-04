@@ -5,6 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "solve": "npx tsx ./index.ts",
+    "solve:all": "npm run solve -- --all",
     "watch": "npx tsx ./index.ts --watch",
     "prepare": "husky"
   },
