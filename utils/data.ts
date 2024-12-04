@@ -10,3 +10,8 @@ export async function readLines(dir: string, { testInput }: ReadLinesOptions = {
   const data = await readFile(resolve(dir, filename));
   return data.toString().split('\n');
 }
+
+export async function readGrid(...args: Parameters<typeof readLines>) {
+  const lines = await readLines(...args);
+  return lines.map((line) => line.split(''));
+}
