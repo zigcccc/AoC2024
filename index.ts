@@ -11,7 +11,7 @@ program
   .option('-a , --all', 'Solve all?')
   .action((options) => {
     if (!options.all && !options.day) {
-      console.error('Error: Either --all or --day must be provided.');
+      console.error('Error: Either --all or --day option must be provided. Type --help to see available options.');
       process.exit(1);
     }
   });
