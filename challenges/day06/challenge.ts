@@ -1,7 +1,6 @@
 import { copy2DArray, logger, readGrid } from '@/utils';
 
 const wall = '#';
-const obstacle = 'O';
 
 type Guard = '^' | '>' | 'v' | '<';
 
@@ -29,15 +28,19 @@ function getGuardPosition(grid: string[][]) {
   }
 }
 
+function isGuardInBounds(pos: readonly [number, number], gridLength: number) {
+  return pos[0] < gridLength && pos[0] >= 0 && pos[1] < gridLength && pos[1] >= 0;
+}
+
 function getGuardNextPosition(currentGuard: Guard, [currentRow, currentCol]: readonly [number, number]) {
   const [dRow, dCol] = GuardDirection[currentGuard];
   return [currentRow + dRow, currentCol + dCol] as const;
 }
 
-function getGuardPath(grid: string[][]) {
+function getGuardPath(grid: string[][], initialGuardPosition: readonly [number, number]) {
   const spots = new Set<string>([]);
 
-  let guardPosition = getGuardPosition(grid);
+  let guardPosition = initialGuardPosition;
 
   if (!guardPosition) {
     throw new Error('No guard found!');
@@ -49,12 +52,7 @@ function getGuardPath(grid: string[][]) {
     const currentGuard = grid[guardPosition[0]][guardPosition[1]] as Guard;
     const guardNextPosition = getGuardNextPosition(currentGuard, guardPosition);
 
-    if (
-      guardNextPosition[0] >= grid.length ||
-      guardNextPosition[0] < 0 ||
-      guardNextPosition[1] >= grid[0].length ||
-      guardNextPosition[1] < 0
-    ) {
+    if (!isGuardInBounds(guardNextPosition, grid.length)) {
       break;
     }
 
@@ -73,7 +71,13 @@ function getGuardPath(grid: string[][]) {
 
 async function solvePart1() {
   const grid = await readGrid(__dirname, { testInput: false });
-  const spots = getGuardPath(grid);
+  const initialGuardPosition = getGuardPosition(grid);
+
+  if (!initialGuardPosition) {
+    throw new Error('No guard found!');
+  }
+
+  const spots = getGuardPath(grid, initialGuardPosition);
 
   logger.logSolution({ part: 1, result: spots.length });
 }
@@ -88,15 +92,14 @@ async function solvePart2() {
     throw new Error('No guard found!');
   }
 
-  const possibleObstaclePositions = getGuardPath(copy2DArray(originalGrid)).filter((pos) => {
-    return !(pos[0] === initialGuardPosition[0] && pos[1] === initialGuardPosition[1]);
-  });
+  const possibleObstaclePositions = getGuardPath(copy2DArray(originalGrid), initialGuardPosition);
+  possibleObstaclePositions.shift();
 
   for (const [obstascleRow, obstacleCol] of possibleObstaclePositions) {
     const rotations = new Set<string>();
     const grid = copy2DArray(originalGrid);
     rotations.add(grid[initialGuardPosition[0]][initialGuardPosition[1]] + initialGuardPosition.join(''));
-    grid[obstascleRow][obstacleCol] = obstacle;
+    grid[obstascleRow][obstacleCol] = wall;
 
     let guardPosition = initialGuardPosition;
 
@@ -104,19 +107,11 @@ async function solvePart2() {
       const currentGuard = grid[guardPosition[0]][guardPosition[1]] as Guard;
       const guardNextPosition = getGuardNextPosition(currentGuard, guardPosition);
 
-      if (
-        guardNextPosition[0] >= grid.length ||
-        guardNextPosition[0] < 0 ||
-        guardNextPosition[1] >= grid[0].length ||
-        guardNextPosition[1] < 0
-      ) {
+      if (!isGuardInBounds(guardNextPosition, grid.length)) {
         break;
       }
 
-      if (
-        grid[guardNextPosition[0]][guardNextPosition[1]] !== wall &&
-        grid[guardNextPosition[0]][guardNextPosition[1]] !== obstacle
-      ) {
+      if (grid[guardNextPosition[0]][guardNextPosition[1]] !== wall) {
         grid[guardNextPosition[0]][guardNextPosition[1]] = currentGuard;
         grid[guardPosition[0]][guardPosition[1]] = '.';
         guardPosition = guardNextPosition;
