@@ -24,8 +24,17 @@ function withBorder(...lines: string[]) {
   console.log('');
 }
 
+async function withTiming(fn: () => Promise<void>) {
+  console.time(chalk.blackBright(fn.name));
+  await fn();
+  console.timeEnd(chalk.blackBright(fn.name));
+  console.log('');
+  console.log('');
+}
+
 export const logger = {
   logSolution({ result, part }: LogOptions) {
     withBorder(chalk.green.underline(`Solution - part ${part}:`), chalk.green('Result:', chalk.bold(result)));
   },
+  timing: withTiming,
 } as const;

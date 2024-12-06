@@ -28,10 +28,8 @@ function getGuardPosition(grid: string[][]) {
   }
 }
 
-function getGuardNextPosition(currentGuard: Guard, currentPosition: readonly [number, number]) {
-  const [currentRow, currentCol] = currentPosition;
+function getGuardNextPosition(currentGuard: Guard, [currentRow, currentCol]: readonly [number, number]) {
   const [dRow, dCol] = GuardDirection[currentGuard];
-
   return [currentRow + dRow, currentCol + dCol] as const;
 }
 
@@ -136,10 +134,8 @@ async function solvePart2() {
 }
 
 async function solve() {
-  await solvePart1();
-  console.time('part2()');
-  await solvePart2();
-  console.timeEnd('part2()');
+  await logger.timing(solvePart1);
+  await logger.timing(solvePart2);
 }
 
 solve();
