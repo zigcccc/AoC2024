@@ -46,20 +46,25 @@ function getGuardPath(grid: string[][]) {
   spots.add(guardPosition.join(','));
 
   while (true) {
-    try {
-      const currentGuard = grid[guardPosition[0]][guardPosition[1]] as Guard;
-      const guardNextPosition = getGuardNextPosition(currentGuard, guardPosition);
+    const currentGuard = grid[guardPosition[0]][guardPosition[1]] as Guard;
+    const guardNextPosition = getGuardNextPosition(currentGuard, guardPosition);
 
-      if (grid[guardNextPosition[0]][guardNextPosition[1]] !== wall) {
-        grid[guardNextPosition[0]][guardNextPosition[1]] = currentGuard;
-        grid[guardPosition[0]][guardPosition[1]] = 'X';
-        spots.add(guardNextPosition.join(','));
-        guardPosition = guardNextPosition;
-      } else {
-        grid[guardPosition[0]][guardPosition[1]] = GuardRotation[currentGuard];
-      }
-    } catch {
+    if (
+      guardNextPosition[0] >= grid.length ||
+      guardNextPosition[0] < 0 ||
+      guardNextPosition[1] >= grid[0].length ||
+      guardNextPosition[1] < 0
+    ) {
       break;
+    }
+
+    if (grid[guardNextPosition[0]][guardNextPosition[1]] !== wall) {
+      grid[guardNextPosition[0]][guardNextPosition[1]] = currentGuard;
+      grid[guardPosition[0]][guardPosition[1]] = 'X';
+      spots.add(guardNextPosition.join(','));
+      guardPosition = guardNextPosition;
+    } else {
+      grid[guardPosition[0]][guardPosition[1]] = GuardRotation[currentGuard];
     }
   }
 
